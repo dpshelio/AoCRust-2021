@@ -1,5 +1,9 @@
 use std::env;
 
+fn sonar_sweep(input: &String){
+    println!("Running a sonar sweep through {}", input);
+    println!(".... beeep .... beeep .... beeep ...");
+}
 
 fn help() {
     println!("usage:
@@ -35,6 +39,7 @@ fn main() {
             match puzzle_number {
                 1 => {
                     println!("Running puzzle {} with {} as input", puzzle_number, input);
+                    sonar_sweep(input);
                 },
                 _ => {
                     println!("Puzzle {} hasn't been implemented yet", puzzle_number);
