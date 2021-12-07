@@ -1,8 +1,17 @@
 use std::env;
+use std::fs;
 
 fn sonar_sweep(input: &String){
     println!("Running a sonar sweep through {}", input);
     println!(".... beeep .... beeep .... beeep ...");
+    let content = fs::read_to_string(input)
+        .expect("Something went wrong reading the file");
+
+    let lines = content.lines().collect::<Vec<_>>();
+
+    println!("{} data points", lines.len());
+    println!("First data point: {}", lines[0]);
+    println!("Last data point: {}", lines[lines.len() - 1]);
 }
 
 fn help() {
