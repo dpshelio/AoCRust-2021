@@ -7,7 +7,9 @@ fn sonar_sweep(input: &String){
     let content = fs::read_to_string(input)
         .expect("Something went wrong reading the file");
 
-    let lines = content.lines().collect::<Vec<_>>();
+    let lines: Vec<i32> = content.lines()
+        .map(|s| s.parse::<i32>().expect("this doesn't look like a number"))
+        .collect();
 
     println!("{} data points", lines.len());
     println!("First data point: {}", lines[0]);
