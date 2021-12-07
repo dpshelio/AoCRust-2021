@@ -23,6 +23,22 @@ fn main() {
             let puzzle = &args[1];
             let input = &args[2];
             println!("I'm going to run {} with {} as input", puzzle, input);
+            let puzzle_number: i32 = match puzzle.parse() {
+                Ok(n) => {
+                    n
+                },
+                Err(_) => {
+                    eprintln!("error: The puzzle number to execute should be an integer number");
+                    return;
+                }
+            };
+            match puzzle_number {
+                1 => {
+                    println!("Running puzzle {} with {} as input", puzzle_number, input);
+                },
+                _ => {
+                    println!("Puzzle {} hasn't been implemented yet", puzzle_number);
+                }
             }
         },
         1 |  _ => {
