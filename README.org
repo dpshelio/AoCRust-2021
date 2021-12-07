@@ -1,0 +1,162 @@
+#+PROPERTY: header-args:bash :prologue "exec 2>&1" :epilogue ":"
+* Puzzles
+** 1 - Sonar Sweep
+   Find how many are increasing with respect to the previous value.
+
+   + Things needed:
+     - read data
+     - see if next > previous
+     - count the elements.
+
+* Setup
+** 1 create project for all puzzles
+   [[https://doc.rust-lang.org/cargo/guide/creating-a-new-project.html][Creating a new Project]]
+   #+begin_src bash :results drawer
+     cargo new AoCRust --bin
+   #+end_src
+
+   #+RESULTS:
+   :results:
+   :end:
+** 2 Create a command line to accept multiple puzzles
+   [[https://doc.rust-lang.org/rust-by-example/std_misc/arg/matching.html][Argument parsing book example]]
+** 3 compile and run
+
+   =M-m m c c=
+   #+begin_src bash :dir ./ :results drawer
+     cargo build
+   #+end_src
+
+   #+RESULTS:
+   :results:
+   :end:
+
+   #+begin_src bash :dir ./ :results drawer
+     echo "-------- No arguments ----------------------------------------"
+     ./target/debug/AoCRust
+     echo "-------- 1 argument ------------------------------------------"
+     ./target/debug/AoCRust hello
+     echo "-------- 2 arguments: good inputs ----------------------------"
+     ./target/debug/AoCRust 1 file
+     echo "-------- 2 arguments: no implemented -------------------------"
+     ./target/debug/AoCRust 2 file
+     echo "---------2 arguments: bad input ------------------------------"
+     ./target/debug/AoCRust one file
+   #+end_src
+
+   #+RESULTS:
+   :results:
+   -------- No arguments ----------------------------------------
+   Welcome to AoC solutions with RUST! (cc 2021)
+   usage:
+   rustaoc <puzzle_number> <input>
+       runs the puzzle for the given input.
+
+
+   -------- 1 argument ------------------------------------------
+   Welcome to AoC solutions with RUST! (cc 2021)
+   Probably you should give us an extra file!
+   -------- 2 arguments: good inputs ----------------------------
+   Welcome to AoC solutions with RUST! (cc 2021)
+   I'm going to run 1 with file as input
+   Running puzzle 1 with file as input
+   Running a sonar sweep through file
+   .... beeep .... beeep .... beeep ...
+   -------- 2 arguments: no implemented -------------------------
+   Welcome to AoC solutions with RUST! (cc 2021)
+   I'm going to run 2 with file as input
+   Puzzle 2 hasn't been implemented yet
+   ---------2 arguments: bad input ------------------------------
+   Welcome to AoC solutions with RUST! (cc 2021)
+   I'm going to run one with file as input
+   error: The puzzle number to execute should be an integer number
+   :end:
+** 4 Add a way to read files
+   [[https://doc.rust-lang.org/book/ch12-02-reading-a-file.html][reading a file]]
+   #+begin_src bash :dir ./ :results drawer
+     echo "-------- 2 arguments: file doesn't exist ---------------------"
+     ./target/debug/AoCRust 1 file
+     echo "-------- 2 arguments: good inputs ----------------------------"
+     ./target/debug/AoCRust 1 ./data/2021_p1_input
+   #+end_src
+
+   #+RESULTS:
+   :results:
+   -------- 2 arguments: file doesn't exist ---------------------
+   Welcome to AoC solutions with RUST! (cc 2021)
+   I'm going to run 1 with file as input
+   Running puzzle 1 with file as input
+   Running a sonar sweep through file
+   .... beeep .... beeep .... beeep ...
+   thread 'main' panicked at 'Something went wrong reading the file: Os { code: 2, kind: NotFound, message: "No such file or directory" }', src/main.rs:32:10
+   note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+   -------- 2 arguments: good inputs ----------------------------
+   Welcome to AoC solutions with RUST! (cc 2021)
+   I'm going to run 1 with ./data/2021_p1_input as input
+   Running puzzle 1 with ./data/2021_p1_input as input
+   Running a sonar sweep through ./data/2021_p1_input
+   .... beeep .... beeep .... beeep ...
+   2000 data points
+   First data point: 193
+   Last data point: 2658
+   Number of increases: 1162
+   :end:
+
+** 4 run tests
+
+   =M-m m t a=
+   #+begin_src bash :dir ./ :results drawer
+     cargo test
+   #+end_src
+
+   #+RESULTS:
+   :results:
+      Compiling AoCRust v0.1.0
+   warning: crate `AoCRust` should have a snake case name
+     |
+     = note: `#[warn(non_snake_case)]` on by default
+     = help: convert the identifier to snake case: `ao_crust`
+
+   warning: `AoCRust` (bin "AoCRust" test) generated 1 warning
+       Finished test [unoptimized + debuginfo] target(s) in 0.40s
+        Running unittests (target/debug/deps/AoCRust-0de2b4def5123c6d)
+
+   running 1 test
+   test tests::number_of_increases_given ... ok
+
+   test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   :end:
+
+* Learning path
+  😕 are things that I still don't understand.
+
+** RUST
+   - [[https://doc.rust-lang.org/rust-by-example/std_misc/arg/matching.html][Argument parsing]]
+   - [[https://doc.rust-lang.org/rust-by-example/flow_control/match.html][match]]:
+     - you can use =|= to add multiple options.
+   - [[https://doc.rust-lang.org/rust-by-example/fn.html][functions]]:
+     - =argument: type= syntax
+     - 😕 using =&String=, as that's what gets from =env=
+   - [[https://doc.rust-lang.org/book/ch12-02-reading-a-file.html][reading a file]]:
+     - fs::read_to_string:
+       - has =.len()= and provides number of characters.
+       - [[https://doc.rust-lang.org/std/primitive.str.html#method.lines][str's lines method]]: =.lines()= can break the lines into multiple
+         - but you can't used =len= on lines because it returns an iterator.
+   - =.collect= [[https://stackoverflow.com/a/47152394/1087595][converts an iterator]] into a =Vec= or to anything that implements =FromIterator<&str>=
+   - =.map= for mapping!
+   - [[https://doc.rust-lang.org/stable/std/primitive.str.html#method.parse][=.parse()=]] tries to convert automatically, but you can pass a turbofish ::<> !!
+   - 😕 There are vectors =vec![]= and arrays =[ ]=.
+
+
+** emacs
+   - I had to install rls to get the lsp working:
+     #+begin_src bash
+      rustup component add rls
+     #+end_src
+
+   - org-mode: [[https://emacs.stackexchange.com/a/59879/6658][how to get stdout/err in the output]]
+
+   - spacemacs commands:
+     - cargo build: =M-m c c=
+     - cargo test: =M-m t a=
