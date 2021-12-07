@@ -1,6 +1,17 @@
 use std::env;
 use std::fs;
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn number_of_increases_given() {
+        let input: Vec<i32> = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
+        assert_eq!(number_of_increase(input), 7);
+    }
+}
+
 
 fn number_of_increase(numbers: Vec<i32>) -> i32 {
 
