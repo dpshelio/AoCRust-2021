@@ -1,11 +1,14 @@
 use std::env;
 use std::fs;
 
-fn number_of_increase(numbers: Vec<i32>) -> Vec<bool> {
 
-    let values: Vec<bool> = numbers.windows(2)
-        .map(|s| s[0] < s[1])
-        .collect();
+fn number_of_increase(numbers: Vec<i32>) -> i32 {
+
+    let values: i32 = numbers.windows(2)
+        .map(|s| (s[0] < s[1]) as i32)
+        .collect::<Vec<i32>>()
+        .iter()
+        .sum();
 
     return values;
 }
@@ -26,7 +29,7 @@ fn sonar_sweep(input: &String){
 
     let values = number_of_increase(lines);
 
-    println!("First value increases: {}", values[0]);
+    println!("Number of increases: {}", values);
 }
 
 fn help() {
