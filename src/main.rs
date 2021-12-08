@@ -18,6 +18,12 @@ mod tests {
         assert_eq!(sliding_window(&input), 5);
     }
 
+    #[test]
+    fn calculate_displacement_given() {
+        let input: Vec<String> = vec!["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"].iter().map(|&s| s.to_string()).collect();
+        assert_eq!(calculate_displacement(&input), 150);
+    }
+
 }
 
 fn number_of_increase(numbers: &Vec<i32>) -> i32 {
@@ -82,6 +88,53 @@ fn sonar_sweep(input: &String){
 
 }
 
+fn calculate_displacement(lines: &Vec<String>) -> i32 {
+
+    let mut depth = 0;
+    let mut position = 0;
+
+    for line in lines {
+        let action_dx: Vec<&str> = line.split_whitespace().collect();
+        let action: &str = action_dx[0];
+        let dx: i32 = action_dx[1].parse::<i32>().expect("This doesn't look like a number");
+
+        match action {
+            "up" => {
+                depth += -1 * dx;
+            },
+            "down" => {
+                depth += dx;
+            },
+            "forward" => {
+                position += dx;
+            },
+            _ => {
+                println!("Moving {}", action);
+            }
+        }
+
+    }
+
+    return depth * position;
+}
+
+fn dive(input: &String){
+    println!("Moving following the instructions you provide through {}", input);
+    println!(".... weee  .... dooown .... up ...");
+    let content = fs::read_to_string(input)
+        .expect("Something went wrong reading the file");
+
+    let lines: Vec<String> = content.lines()
+        .map(|s| s.parse::<String>().expect("Is there a problem?"))
+        .collect::<Vec<_>>();
+
+
+    let displacement = calculate_displacement(&lines);
+
+    println!("Final displacement {}", displacement);
+
+}
+
 fn help() {
     println!("usage:
 rustaoc <puzzle_number> <input>
@@ -117,6 +170,10 @@ fn main() {
                 1 => {
                     println!("Running puzzle {} with {} as input", puzzle_number, input);
                     sonar_sweep(input);
+                },
+                2 => {
+                    println!("Running puzzle {} with {} as input", puzzle_number, input);
+                    dive(input);
                 },
                 _ => {
                     println!("Puzzle {} hasn't been implemented yet", puzzle_number);

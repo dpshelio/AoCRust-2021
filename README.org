@@ -7,6 +7,30 @@
      - read data
      - see if next > previous
      - count the elements.
+** 2 - Dive
+   Find where we end up...
+
+   + Things needed:
+     - read data, separate string and integer
+     - add up values accordingly to each variable
+     - multiply the values.
+*** Run it:
+    #+begin_src bash :dir ./ :results drawer
+     echo "-------- good inputs ----------------------------"
+     ./target/debug/AoCRust 2 ./data/2021_p2_input
+   #+end_src
+
+   #+RESULTS:
+   :results:
+   -------- good inputs ----------------------------
+   Welcome to AoC solutions with RUST! (cc 2021)
+   I'm going to run 2 with ./data/2021_p2_input as input
+   Running puzzle 2 with ./data/2021_p2_input as input
+   Moving following the instructions you provide through ./data/2021_p2_input
+   .... weee  .... dooown .... up ...
+   Final displacement 1580000
+   :end:
+
 
 * Setup
 ** 1 create project for all puzzles
@@ -157,6 +181,8 @@
      (&..) or create a duplicate (=.clone()=)
    - [[https://stackoverflow.com/a/57341631/1087595][How to quickly benchmark a function]]
    - use =_variable_name= if you intend to create it and not use it
+   - 😕 - Strings, str and how to create a string vector. I [[https://stackoverflow.com/a/38186733/1087595][almost got it to the right place]].
+     - `s.to_string()` vs `s.into()`?
 
 
 
