@@ -9,7 +9,7 @@ mod tests {
     #[test]
     fn number_of_increases_given() {
         let input: Vec<i32> = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
-        assert_eq!(number_of_increase(input), 7);
+        assert_eq!(number_of_increase(&input), 7);
     }
 }
 
@@ -58,7 +58,8 @@ fn sonar_sweep(input: &String){
 
     assert_eq!(values_filt, values as usize);
 
-    println!("Number of increases: {}", values);
+    println!("Number of increases for part 1: {}", values);
+
 }
 
 fn help() {
