@@ -12,14 +12,23 @@ mod tests {
     }
 }
 
-
-fn number_of_increase(numbers: Vec<i32>) -> i32 {
+fn number_of_increase(numbers: &Vec<i32>) -> i32 {
 
     let values: i32 = numbers.windows(2)
         .map(|s| (s[0] < s[1]) as i32)
         .collect::<Vec<i32>>()
         .iter()
         .sum();
+
+    return values;
+}
+
+fn number_of_increase_filt(numbers: &Vec<i32>) -> usize {
+
+    let values: usize = numbers.windows(2)
+        .filter(|s| (s[0] < s[1]))
+        .collect::<Vec<_>>()
+        .len();
 
     return values;
 }
@@ -38,7 +47,9 @@ fn sonar_sweep(input: &String){
     println!("First data point: {}", lines[0]);
     println!("Last data point: {}", lines[lines.len() - 1]);
 
-    let values = number_of_increase(lines);
+    let values_filt: usize = number_of_increase_filt(&lines);
+    let values: i32 = number_of_increase(&lines);
+    assert_eq!(values_filt, values as usize);
 
     println!("Number of increases: {}", values);
 }
