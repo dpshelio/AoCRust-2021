@@ -1,5 +1,6 @@
 use std::env;
 use std::fs;
+use std::time::Instant;
 
 #[cfg(test)]
 mod tests {
@@ -47,8 +48,14 @@ fn sonar_sweep(input: &String){
     println!("First data point: {}", lines[0]);
     println!("Last data point: {}", lines[lines.len() - 1]);
 
+    let mut before = Instant::now();
     let values_filt: usize = number_of_increase_filt(&lines);
+    println!("Filter (count bools) time: {:.2?}", before.elapsed());
+
+    before = Instant::now();
     let values: i32 = number_of_increase(&lines);
+    println!("Map (sum bools) time: {:.2?}", before.elapsed());
+
     assert_eq!(values_filt, values as usize);
 
     println!("Number of increases: {}", values);
