@@ -11,6 +11,13 @@ mod tests {
         let input: Vec<i32> = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
         assert_eq!(number_of_increase(&input), 7);
     }
+
+    #[test]
+    fn sliding_window_given() {
+        let input: Vec<i32> = vec![199, 200, 208, 210, 200, 207, 240, 269, 260, 263];
+        assert_eq!(sliding_window(&input), 5);
+    }
+
 }
 
 fn number_of_increase(numbers: &Vec<i32>) -> i32 {
@@ -32,6 +39,16 @@ fn number_of_increase_filt(numbers: &Vec<i32>) -> usize {
         .len();
 
     return values;
+}
+
+fn sliding_window(numbers: &Vec<i32>) -> usize {
+
+    let values: Vec<i32> = numbers.windows(3)
+        .map(|s| (s[0] + s[1] + s[2]))
+        .collect::<Vec<_>>();
+    let result: usize = number_of_increase_filt(&values);
+
+    return result;
 }
 
 fn sonar_sweep(input: &String){
@@ -59,6 +76,9 @@ fn sonar_sweep(input: &String){
     assert_eq!(values_filt, values as usize);
 
     println!("Number of increases for part 1: {}", values);
+
+    let values_2: usize = sliding_window(&lines);
+    println!("Number of increases for part 2: {}", values_2);
 
 }
 
