@@ -88,7 +88,7 @@
    Running puzzle 1 with file as input
    Running a sonar sweep through file
    .... beeep .... beeep .... beeep ...
-   thread 'main' panicked at 'Something went wrong reading the file: Os { code: 2, kind: NotFound, message: "No such file or directory" }', src/main.rs:32:10
+   thread 'main' panicked at 'Something went wrong reading the file: Os { code: 2, kind: NotFound, message: "No such file or directory" }', src/main.rs:41:10
    note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
    -------- 2 arguments: good inputs ----------------------------
    Welcome to AoC solutions with RUST! (cc 2021)
@@ -99,6 +99,8 @@
    2000 data points
    First data point: 193
    Last data point: 2658
+   Filter (count bools) time: 264.52µs
+   Map (sum bools) time: 256.59µs
    Number of increases: 1162
    :end:
 
@@ -141,12 +143,20 @@
    - [[https://doc.rust-lang.org/book/ch12-02-reading-a-file.html][reading a file]]:
      - fs::read_to_string:
        - has =.len()= and provides number of characters.
+         - =.len()= has type usize
        - [[https://doc.rust-lang.org/std/primitive.str.html#method.lines][str's lines method]]: =.lines()= can break the lines into multiple
          - but you can't used =len= on lines because it returns an iterator.
    - =.collect= [[https://stackoverflow.com/a/47152394/1087595][converts an iterator]] into a =Vec= or to anything that implements =FromIterator<&str>=
    - =.map= for mapping!
-   - [[https://doc.rust-lang.org/stable/std/primitive.str.html#method.parse][=.parse()=]] tries to convert automatically, but you can pass a turbofish ::<> !!
+   - =.parse()= [[https://doc.rust-lang.org/stable/std/primitive.str.html#method.parse][tries to convert automatically]], but you can pass a turbofish ::<> !!
    - 😕 There are vectors =vec![]= and arrays =[ ]=.
+   - =.filter= works as expected!
+   - I can't pass the same value to two functions, as that would be "moving" the
+     data, and the ownership is lost. We can borrow it by giving a reference
+     (&..) or create a duplicate (=.clone()=)
+   - [[https://stackoverflow.com/a/57341631/1087595][How to quickly benchmark a function]]
+   - use =_variable_name= if you intend to create it and not use it
+
 
 
 ** emacs
@@ -160,3 +170,4 @@
    - spacemacs commands:
      - cargo build: =M-m c c=
      - cargo test: =M-m t a=
+     - Clicking on an error code opens the help within emacs! 😍 - e.g., E0382
