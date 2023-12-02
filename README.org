@@ -33,6 +33,11 @@
    :end:
 ** 2023
 *** Trebuchet?!
+   Find the first and last number on a set of strings, and sum them all.
+
+   + Things needed:
+     - read strings and separate strings and numbers
+     - sum the elements on an array.
 
 * Setup
 ** 1 create project for all puzzles

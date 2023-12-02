@@ -24,6 +24,18 @@ mod tests {
         assert_eq!(calculate_displacement(&input), 150);
     }
 
+    #[test]
+    fn reverse_string() {
+        let input: &str = "This";
+        assert_eq!(input.chars().rev().collect::<String>(), "sihT");
+    }
+
+    #[test]
+    fn calculate_calibration_given() {
+        let input: Vec<String> = vec!["1abc2", "pqr3stu8vwx", "a1b2c3d4e5f", "treb7uchet"].iter().map(|&s| s.to_string()).collect();
+        assert_eq!(calculate_calibration(&input), 142);
+    }
+
 }
 
 fn number_of_increase(numbers: &Vec<i32>) -> i32 {
@@ -135,6 +147,49 @@ fn dive(input: &String){
 
 }
 
+fn calculate_calibration(lines: &Vec<String>) -> u32 {
+    let mut values: Vec<u32> = Vec::new();
+    let mut val1: u32 = 0;
+    let mut val2: u32 = 0;
+    for line in lines {
+        for single_char in line.chars() {
+            if single_char.is_digit(10) {
+                val1 = 10 * single_char.to_digit(10).expect("This doesn't look like a number");
+                break;
+            }
+
+        }
+        for single_char in line.chars().rev() {
+            if single_char.is_digit(10) {
+                val2 = single_char.to_digit(10).expect("This doesn't look like a number");
+                break;
+            }
+
+        }
+        values.push(val1 + val2);
+    }
+    return values
+        .iter()
+        .sum();
+;
+
+}
+
+fn trebuchet(input: &String){
+    println!("Extracting calibration values from {}", input);
+    let content = fs::read_to_string(input)
+        .expect("Something went wrong reading the file");
+
+    let lines: Vec<String> = content.lines()
+        .map(|s| s.parse::<String>().expect("Is there a problem?"))
+        .collect::<Vec<_>>();
+
+    let calibration = calculate_calibration(&lines);
+
+    println!("Calibration value {}", calibration);
+
+}
+
 fn help() {
     println!("usage:
 rustaoc <puzzle_number> <input>
@@ -144,7 +199,7 @@ rustaoc <puzzle_number> <input>
 }
 
 fn main() {
-    println!("Welcome to AoC solutions with RUST! (cc 2021)");
+    println!("Welcome to AoC solutions with RUST! (cc 2021, 2023)");
 
     let args: Vec<String> = env::args().collect();
 
@@ -174,6 +229,10 @@ fn main() {
                 202102 => {
                     println!("Running puzzle {} with {} as input", puzzle_number, input);
                     dive(input);
+                },
+                202301 => {
+                    println!("Running puzzle {} with {} as input", puzzle_number, input);
+                    trebuchet(input);
                 },
                 _ => {
                     println!("Puzzle {} hasn't been implemented yet", puzzle_number);
