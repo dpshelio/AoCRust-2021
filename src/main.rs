@@ -167,11 +167,11 @@ fn main() {
                 }
             };
             match puzzle_number {
-                1 => {
+                202101 => {
                     println!("Running puzzle {} with {} as input", puzzle_number, input);
                     sonar_sweep(input);
                 },
-                2 => {
+                202102 => {
                     println!("Running puzzle {} with {} as input", puzzle_number, input);
                     dive(input);
                 },

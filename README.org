@@ -1,20 +1,21 @@
 #+PROPERTY: header-args:bash :prologue "exec 2>&1" :epilogue ":"
 * Puzzles
-** 1 - Sonar Sweep
+** 2021
+*** 1 - Sonar Sweep
    Find how many are increasing with respect to the previous value.
 
    + Things needed:
      - read data
      - see if next > previous
      - count the elements.
-** 2 - Dive
+*** 2 - Dive
    Find where we end up...
 
    + Things needed:
      - read data, separate string and integer
      - add up values accordingly to each variable
      - multiply the values.
-*** Run it:
+**** Run it:
     #+begin_src bash :dir ./ :results drawer
      echo "-------- good inputs ----------------------------"
      ./target/debug/AoCRust 2 ./data/2021_p2_input
@@ -30,7 +31,8 @@
    .... weee  .... dooown .... up ...
    Final displacement 1580000
    :end:
-
+** 2023
+*** Trebuchet?!
 
 * Setup
 ** 1 create project for all puzzles
