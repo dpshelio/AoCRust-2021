@@ -62,8 +62,9 @@ mod tests {
 
     #[test]
     fn separate_strings_in_chain(){
-        let input: &str = "Game 1: 3 blue, 32 red; 1 red, 2 green, 6 blue; 2 green";
-        assert_eq!(extract_game_value(input), 0);
+        let input: &str = "Game 1: 3 blue, 5 red; 1 red, 2 green, 6 blue; 2 green";
+        // assert_eq!(extract_game_value(input), 0);
+        assert_eq!(extract_game_value(input), 60);
 
     }
 }
@@ -113,9 +114,13 @@ fn extract_game_value(game_def: &str) -> u32 {
     //let valid = round.map(|col| (col.unwrap() <= fixed.get(col).unwrap())).collect().iter().sum();
     //println!("the values is {:?}", valid);
     let mut valid: bool = true;
+    let mut product: u32 = 1;
     for (key, value) in &round {
         valid &= value <= fixed.get(key).unwrap();
+        product *= value;
     }
+
+    return product;
     if valid {
         return game_id.clone().parse::<u32>().unwrap();
     } else {
