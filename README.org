@@ -38,6 +38,14 @@
    + Things needed:
      - read strings and separate strings and numbers
      - sum the elements on an array.
+*** Cube Conundrum
+   Find the possible games and sum them all.
+
+   + things needed:
+     - Extract the id and values separated by =:=
+     - Extract the values of hands separated by =;=
+     - Extract the values for each game separated by =,=
+     - Extract the colour and number separated by space.
 
 * Setup
 ** 1 create project for all puzzles

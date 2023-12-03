@@ -48,6 +48,81 @@ mod tests {
         assert_eq!(numbers.keys().max().unwrap_or(&0), &3);
         assert_eq!(numbers.keys().min().unwrap_or(&0), &0);
     }
+
+    #[test]
+    fn separate_strings() {
+        let mut sentence: &str = "This is";
+        assert_eq!(sentence.split(' ').collect::<Vec<&str>>(), ["This", "is"]);
+        sentence = "This:is";
+        assert_eq!(sentence.split(":").collect::<Vec<&str>>(), ["This", "is"]);
+        sentence = "This;is";
+        assert_eq!(sentence.split(";").collect::<Vec<&str>>(), ["This", "is"]);
+
+    }
+
+    #[test]
+    fn separate_strings_in_chain(){
+        let input: &str = "Game 1: 3 blue, 32 red; 1 red, 2 green, 6 blue; 2 green";
+        assert_eq!(extract_game_value(input), 0);
+
+    }
+}
+
+fn cube_conundrum(input: &String){
+    println!("Extracting results of game from {}", input);
+    let content = fs::read_to_string(input)
+        .expect("Something went wrong reading the file");
+
+    let lines: Vec<String> = content.lines()
+        .map(|s| s.parse::<String>().expect("Is there a problem?"))
+        .collect::<Vec<_>>();
+
+    let results: u32 = lines.iter().map(|s| extract_game_value(s)).collect::<Vec<u32>>().iter().sum();
+
+    println!("Valid games {}", results);
+}
+
+fn extract_game_value(game_def: &str) -> u32 {
+    let mut game_id: &str = "";
+    game_id = game_def.split(": ").collect::<Vec<&str>>()[0].split(" ").collect::<Vec<&str>>()[1];
+    let mut round = HashMap::from([
+        ("blue", 0 as u32),
+        ("red", 0 as u32),
+        ("green", 0 as u32),
+    ]);
+    for hand in game_def.split(": ").collect::<Vec<&str>>()[1].split("; ").collect::<Vec<&str>>(){
+        for hand_ in hand.split(", ").collect::<Vec<&str>>(){
+            let mut value: &str;
+            let mut colour: &str;
+            let results = hand_.split(" ").collect::<Vec<&str>>();
+            value = results[0];
+            colour = results[1];
+            println!("{:?} and {:?}", value, colour);
+            round.entry(colour).and_modify(|colour| *colour = *colour.max(&mut value.parse::<u32>().unwrap()));
+            }
+    }
+    for (key, value) in &round {
+        println!("{:?}: {:?}", key, value);
+    }
+    let fixed = HashMap::from([
+        ("blue", 14 as u32),
+        ("red", 12 as u32),
+        ("green", 13 as u32)
+    ]);
+
+    //let valid = round.map(|col| (col.unwrap() <= fixed.get(col).unwrap())).collect().iter().sum();
+    //println!("the values is {:?}", valid);
+    let mut valid: bool = true;
+    for (key, value) in &round {
+        valid &= value <= fixed.get(key).unwrap();
+    }
+    if valid {
+        return game_id.clone().parse::<u32>().unwrap();
+    } else {
+        return 0;
+    }
+
+
 }
 
 fn number_of_increase(numbers: &Vec<i32>) -> i32 {
@@ -266,6 +341,10 @@ fn main() {
                 202301 => {
                     println!("Running puzzle {} with {} as input", puzzle_number, input);
                     trebuchet(input);
+                },
+                202302 => {
+                    println!("Running puzzle {} with {} as input", puzzle_number, input);
+                    cube_conundrum(input);
                 },
                 _ => {
                     println!("Puzzle {} hasn't been implemented yet", puzzle_number);
