@@ -190,6 +190,8 @@
    - use =_variable_name= if you intend to create it and not use it
    - 😕 - Strings, str and how to create a string vector. I [[https://stackoverflow.com/a/38186733/1087595][almost got it to the right place]].
      - `s.to_string()` vs `s.into()`?
+   - 😕 - I have no clue what I am doing with =options=, =&value= and =unwraps= for the [[file:src/main.rs::fn calculate_calibration(lines: &Vec<String>) -> u32 {][=calculate_calibration=]] function.
+
 
 
 

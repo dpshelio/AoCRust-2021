@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 use std::time::Instant;
+use std::collections::HashMap;
 
 #[cfg(test)]
 mod tests {
@@ -36,6 +37,17 @@ mod tests {
         assert_eq!(calculate_calibration(&input), 142);
     }
 
+    #[test]
+    fn min_max_dict() {
+        let numbers = HashMap::from([
+            (0, "zero"),
+            (1, "one"),
+            (2, "two"),
+            (3, "three")
+        ]);
+        assert_eq!(numbers.keys().max().unwrap_or(&0), &3);
+        assert_eq!(numbers.keys().min().unwrap_or(&0), &0);
+    }
 }
 
 fn number_of_increase(numbers: &Vec<i32>) -> i32 {
@@ -151,28 +163,49 @@ fn calculate_calibration(lines: &Vec<String>) -> u32 {
     let mut values: Vec<u32> = Vec::new();
     let mut val1: u32 = 0;
     let mut val2: u32 = 0;
+    let numbers = HashMap::from([
+        ("zero", 0 as u32),
+        ("one", 1 as u32),
+        ("two", 2 as u32),
+        ("three", 3 as u32),
+        ("four", 4 as u32),
+        ("five", 5 as u32),
+        ("six", 6 as u32),
+        ("seven", 7 as u32),
+        ("eight", 8 as u32),
+        ("nine", 9 as u32),
+    ]);
+    let mut digit: u32 = 0;
+
     for line in lines {
-        for single_char in line.chars() {
-            if single_char.is_digit(10) {
-                val1 = 10 * single_char.to_digit(10).expect("This doesn't look like a number");
-                break;
+        let mut positions = HashMap::new();
+        for (number_text, number) in &numbers{
+            if line.find(number_text).is_some() {
+                positions.insert(line.find(number_text), number.clone());
+                positions.insert(line.rfind(number_text), number.clone());
             }
-
         }
-        for single_char in line.chars().rev() {
+        for (index, single_char) in line.chars().enumerate() {
+        //for (index, single_char) in(0..).zip(line.chars()) {
             if single_char.is_digit(10) {
-                val2 = single_char.to_digit(10).expect("This doesn't look like a number");
-                break;
+                digit = single_char.to_digit(10).unwrap();
+                positions.insert(Some(index), digit);
             }
-
         }
+
+        // printing a hash
+        // for (key, value) in &positions {
+        //     println!("{:?}: {:?}", key, value);
+        // }
+        // find min and max of the keys and use them.
+        val1 = 10 * positions.get(positions.keys().min().unwrap()).unwrap();
+        val2 = positions.get(positions.keys().max().unwrap()).unwrap() * 1;
         values.push(val1 + val2);
+
     }
     return values
         .iter()
         .sum();
-;
-
 }
 
 fn trebuchet(input: &String){
